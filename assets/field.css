@@ -1,0 +1,68 @@
+.acf-media-gallery-preview{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 10px -5px;
+    overflow: hidden;
+}
+.acf-media-gallery-preview .item {
+    display: block;
+    height: 150px;
+    width: 150px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #2271b1;
+    background: #FFFFFF;
+    margin: 5px;
+    border-radius: 3px;
+}
+.acf-media-gallery-preview .placeholder{
+    display: block;
+    height: 150px;
+    width: 150px;
+    border: 1px dashed #787c82;
+    background: #FFFFFF;
+    margin: 5px;
+    border-radius: 3px;
+}
+.acf-media-gallery-preview .item img{
+    height: 150px;
+    width: 150px;
+}
+.acf-media-gallery-preview .item .item-tools{
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.acf-media-gallery-preview .item .button{
+    background: white;
+    border-radius: 0;
+    margin: 0;
+    padding: 4px;
+    border-right-width: 0;
+}
+.acf-media-gallery-preview .item .button:last-child{
+    border-right-width: 1px;
+}
+.acf-media-gallery-preview .item .button i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: inherit;
+}
+.acf-media-gallery-preview .item .button.button--remove i{
+    color: #d50000;
+}
+.acf-media-gallery-preview .item:hover{
+    cursor: move;
+}
+.acf-media-gallery-add-btn{
+    display: inline-flex;
+    align-items: center;
+}
+.acf-media-gallery-add-btn i,
+.acf-media-gallery-add-btn span{
+    line-height: normal;
+}
