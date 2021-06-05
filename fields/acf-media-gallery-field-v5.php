@@ -57,7 +57,7 @@ if(!class_exists('ACF_Field_Media_Gallery'))
             $media_gallery_ids = array_map('intval', $media_gallery_ids);
             ?>
             <div id="acf_media_gallery_field_<?php echo $field['ID'];?>" class="acf-media-gallery-field-wrapper" data-active="false">
-                <input type="text" name="<?php echo esc_attr($field['name']) ?>" value="<?php echo esc_attr($field['value']) ?>" class="acf-media-gallery-field-input"/>
+                <input type="hidden" name="<?php echo esc_attr($field['name']) ?>" value="<?php echo esc_attr($field['value']) ?>" class="acf-media-gallery-field-input"/>
                 <div class="acf-media-gallery-preview">
                     <?php
                     if(!empty($media_gallery_ids))
