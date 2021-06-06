@@ -2,7 +2,7 @@
 /*
 Plugin Name: Advanced Custom Fields: Media Gallery Field
 Description: Media Gallery field for ACF
-Version: 1.0
+Version: 1.0.1
 Author: Arman H
 Author URI: https://airarm.wordpress.com
 License: GPLv2 or later

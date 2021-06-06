@@ -14,9 +14,7 @@ if(!class_exists('ACF_Field_Media_Gallery'))
             $this->name = 'media_gallery';
             $this->label = __('Media Gallery');
             $this->category = 'content';
-            $this->defaults = array(
-
-            );
+            $this->defaults = array();
 
             $this->l10n = array(
                 'error'	=> __('Error! Please select a media gallery file'),
@@ -34,9 +32,9 @@ if(!class_exists('ACF_Field_Media_Gallery'))
         function render_field_settings($field)
         {
             $return_format_choices = array(
-                'id' => __("Items ID"),
-                'url' => __("Items URL"),
-                'object' => __("Items Object")
+                'array' => __('Items Array'),
+                'url' => __('Items URL'),
+                'id' => __('Items ID')
             );
 
             $return_format_choices = apply_filters('acf_mgf_return_format_choices', $return_format_choices, $field);
@@ -128,7 +126,7 @@ if(!class_exists('ACF_Field_Media_Gallery'))
             }
 
             $media_gallery_ids = explode(',', $value);
-            $media_gallery_ids = array_map('intval', $media_gallery_ids);
+            $media_gallery_ids = array_unique(array_map('intval', $media_gallery_ids));
 
             if(empty($field['return_format'])){
                return false;
@@ -140,26 +138,44 @@ if(!class_exists('ACF_Field_Media_Gallery'))
 
             if($field['return_format'] == 'url')
             {
-                return array_map(function($item){
-                    $item = wp_get_attachment_url($item);
-                    return $item;
+                return array_map(function($id){
+                    return wp_get_attachment_url($id);
                 }, $media_gallery_ids);
             }
 
-            $media_posts = acf_get_posts(array(
+            $media_posts = new WP_Query(array(
                 'post_type' => 'attachment',
+                'post_status' => 'inherit',
+                'orderby' => 'post__in',
                 'post__in' => $media_gallery_ids,
-                'update_post_meta_cache' => true
             ));
 
-            if(empty($media_posts)){
+            if(!$media_posts->post_count){
                 return false;
             }
 
-            $value = array_map(function($item){
-                $item->metadata = wp_get_attachment_metadata($item->ID);
-                return $item;
-            }, $media_posts);
+            $media_posts_array = array();
+
+            foreach ($media_posts->posts as $index => $media_post)
+            {
+                $media_post_arr = acf_array($media_post);
+
+                $metadata = wp_get_attachment_metadata($media_post_arr['ID']);
+
+                foreach ($metadata['sizes'] as $size_index => $size_item)
+                {
+                    $file_exp = explode('/', $metadata['file']);
+                    unset($file_exp[count($file_exp)-1]);
+                    $file_folder = implode('/', $file_exp);
+
+                    $metadata['sizes'][$size_index]['url'] = site_url('wp-content/uploads/'.$file_folder.'/'.$size_item['file']);
+                }
+
+                $media_post_arr['metadata'] = $metadata;
+                $media_posts_array[] = $media_post_arr;
+            }
+
+            $value = $media_posts_array;
 
             $value = apply_filters('acf_mgf_format_value', $value, $post_id, $field);
 
