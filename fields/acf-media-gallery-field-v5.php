@@ -125,7 +125,14 @@ if(!class_exists('ACF_Field_Media_Gallery'))
                 return false;
             }
 
-            $media_gallery_ids = explode(',', $value);
+            if(is_string($value)){
+                $media_gallery_ids = explode(',', $value);
+            }elseif (is_array($value)){
+                $media_gallery_ids = $value;
+            }else{
+                $media_gallery_ids = array();
+            }
+
             $media_gallery_ids = array_unique(array_map('intval', $media_gallery_ids));
 
             if(empty($field['return_format'])){
